@@ -34,18 +34,25 @@ public:
 		this->denominator = denominator;
 	}
 				//Constructors
+	/*Fraction(int integer, int numerator, int denominator)
+	{
+		set_integer(integer);
+		set_numerator(numerator);
+		set_denominator(denominator);
+		cout << "Constructor:\t" << this << endl;
+	}*/
 	Fraction()
 	{
 		this->integer = 0;
 		this->numerator = 0;
-		this->denominator = 1;
+		set_denominator(1);
 		cout << "Default Constructor:\t" << this << endl;
 	}
 	Fraction(int integer)
 	{
 		this->integer = integer;
 		this->numerator = 0;
-		this->denominator = 1;
+		set_denominator(1);
 		cout << "1ArgConstructor:\t" << this << endl;
 	}
 	Fraction(int numerator, int denominator)
@@ -106,6 +113,18 @@ public:
 	}
 	
 				//Methods
+	Fraction& to_improper()
+	{
+		numerator += integer * denominator;
+		integer = 0;
+		return *this;
+	}
+	Fraction& to_proper()
+	{
+		integer += numerator / denominator;
+		numerator %= denominator;
+		return *this;
+	}
 	void print()const
 	{
 		if (integer) cout << integer;
@@ -119,11 +138,22 @@ public:
 		cout << endl;
 	}
 };
+Fraction operator*(Fraction& left, Fraction& right)
+{
+	left.to_improper();
+	right.to_improper();
+	Fraction result;
+	result.set_numerator(left.get_numerator() * right.get_numerator());
+	result.set_denominator(left.get_denominator() * right.get_denominator());
+	return result;
+}
 
+//#define CONSTRUCTORS_CHECK
 void main()
 {
 	setlocale(LC_ALL, "");
 
+#ifdef CONSTRUCTORS_CHECK
 	Fraction A;			//Default constructor
 	A.print();
 
@@ -143,4 +173,16 @@ void main()
 	F = D;
 	F.print();
 
+#endif // CONSTRUCTORS_CHECK
+	Fraction A(2, 3, 4);
+	A.print();
+
+	Fraction B(3, 4, 5);
+	B.print();
+
+	A.to_improper().print();
+	A.to_proper().print();
+
+	Fraction C = A * B;
+	C.print();
 }
