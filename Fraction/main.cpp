@@ -119,6 +119,16 @@ public:
 		cout << endl;
 	}
 };
+Fraction operator*(Fraction& left, Fraction& right)
+{
+	left.to_improper();
+	right.to_improper();
+	Fraction result;
+	result.set_numerator(left.get_numerator() * right.get_numerator());
+	result.set_denominator(left.get_denominator() * right.get_denominator());
+	return result;
+}
+
 
 void main()
 {
