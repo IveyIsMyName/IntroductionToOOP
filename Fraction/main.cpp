@@ -7,6 +7,8 @@ using namespace std;
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
 Fraction operator/(const Fraction& left, const Fraction& right);
+Fraction operator+(Fraction left, Fraction right);
+Fraction operator-(Fraction left, Fraction right);
 
 class Fraction
 {
@@ -96,6 +98,14 @@ public:
 	Fraction& operator/=(const Fraction& other)
 	{
 		return *this = *this / other;
+	}
+	Fraction& operator+=(const Fraction& other)
+	{
+		return *this = *this + other;
+	}
+	Fraction& operator-=(const Fraction& other)
+	{
+		return *this = *this - other;
 	}
 	Fraction& operator++()
 	{
@@ -195,6 +205,26 @@ Fraction operator/(const Fraction& left, const Fraction& right)
 {
 	return left * right.inverted();
 }
+Fraction operator+(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return Fraction
+	(
+		(left.get_numerator() * (right.get_denominator()) + right.get_numerator() * (left.get_denominator())),
+		left.get_denominator() * right.get_denominator()
+	).to_proper().reduce();
+}
+Fraction operator-(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return Fraction
+	(
+		(left.get_numerator() * (right.get_denominator()) - right.get_numerator() * (left.get_denominator())),
+		left.get_denominator() * right.get_denominator()
+	).to_proper().reduce();
+}
 				//Comparison operators:
 bool operator==(Fraction left, Fraction right)
 {
@@ -229,6 +259,27 @@ bool operator>=(const Fraction& left, const  Fraction& right)
 bool operator<=(const Fraction& left, const  Fraction& right)
 {
 	return !(left > right);
+}
+std::ostream& operator<<(std::ostream& os, const Fraction& obj)
+{
+	if (obj.get_integer()) os << obj.get_integer();
+	if (obj.get_numerator())
+	{
+		if (obj.get_integer()) os << "(";
+		os << obj.get_numerator() << "/" << obj.get_denominator();
+		if (obj.get_integer()) os << ")";
+	}
+	else if (obj.get_integer() == 0) os << 0;
+	return os;
+}
+std::istream& operator>>(std::istream& is, Fraction& obj)
+{
+	int integer, numerator, denominator;
+	is >> integer >> numerator >> denominator;
+	obj.set_integer(integer);
+	obj.set_numerator(numerator);
+	obj.set_denominator(denominator);
+	return is;
 }
 
 void main()
@@ -273,4 +324,12 @@ void main()
 #endif // ARITHMETICAL_OPERATORS_CHECK
 
 	cout << (Fraction(1, 3) >= Fraction(5, 11)) << endl;
+
+	Fraction A(1, 2);
+	cout << A << endl;
+
+	Fraction B;
+	cout << "Введите числа: " << endl;
+	cin >> B;
+	cout << B << endl;
 }
