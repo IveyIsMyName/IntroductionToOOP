@@ -1,8 +1,6 @@
-﻿#include<iostream>
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
 using namespace std;
-
-//#define CONSTRUCTORS_CHECK
-//#define ARITHMETICAL_OPERATORS_CHECK
 
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
@@ -274,13 +272,36 @@ std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 }
 std::istream& operator>>(std::istream& is, Fraction& obj)
 {
-	int integer, numerator, denominator;
+	/*int integer, numerator, denominator;
 	is >> integer >> numerator >> denominator;
 	obj.set_integer(integer);
 	obj.set_numerator(numerator);
-	obj.set_denominator(denominator);
+	obj.set_denominator(denominator);*/
+
+	const int SIZE = 256;
+	char buffer[SIZE] = {};
+	//is >> buffer;
+	is.getline(buffer, SIZE);
+
+	int numbers[3] = {};
+	int n = 0;
+	const char delimiters[] = " /()";
+	for (char* pch = strtok(buffer, delimiters); pch; pch = strtok(NULL, delimiters))
+		numbers[n++] = std::atoi(pch);  //Функция atoi() принимает строку, 
+										//и возвращается целочисленный аналог этой строки,
+										//т.е., строку преобразует в число.
+	//for (int i = 0; i < n; i++)cout << numbers[i] << "\t"; cout << endl;
+	switch (n)
+	{
+	case 1: obj = Fraction(numbers[0]); break;
+	case 2: obj = Fraction(numbers[0], numbers[1]); break;
+	case 3: obj = Fraction(numbers[0], numbers[1], numbers[2]); break;
+	}
 	return is;
 }
+
+//#define CONSTRUCTORS_CHECK
+//#define ARITHMETICAL_OPERATORS_CHECK
 
 void main()
 {
@@ -329,7 +350,6 @@ void main()
 	cout << A << endl;
 
 	Fraction B;
-	cout << "Введите числа: " << endl;
-	cin >> B;
+	cout << "Введите простую дробь: "; cin >> B;
 	cout << B << endl;
 }
