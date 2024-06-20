@@ -2,6 +2,8 @@
 #include<iostream>
 using namespace std;
 
+#define delimiter "\n----------------------------------\n"
+
 class Fraction;
 Fraction operator*(Fraction left, Fraction right);
 Fraction operator/(const Fraction& left, const Fraction& right);
@@ -48,12 +50,21 @@ public:
 		this->denominator = 1;
 		cout << "Default Constructor:\t" << this << endl;
 	}
-	Fraction(int integer)
+	explicit Fraction(int integer)
 	{
 		this->integer = integer;
 		this->numerator = 0;
 		this->denominator = 1;
 		cout << "1ArgConstructor:\t" << this << endl;
+	}
+	Fraction(double value)
+	{
+		integer = int(value); //выделяем целую часть
+		value -= integer;	  //получаем дробную часть	
+		denominator = 1e+9;	  //достигаем высокой точности
+		numerator = int(value * denominator);
+		reduce();
+		cout << "1ArgDoubleConstructor:\t" << this << endl;
 	}
 	Fraction(int numerator, int denominator)
 	{
@@ -302,6 +313,9 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 
 //#define CONSTRUCTORS_CHECK
 //#define ARITHMETICAL_OPERATORS_CHECK
+//#define IOSTREAM_CHECK
+//#define CONVERSIONS_FROM_OTHER_TO_CLASS
+#define CONVERTIONS_HOME_WORK
 
 void main()
 {
@@ -344,6 +358,7 @@ void main()
 	A.print();
 #endif // ARITHMETICAL_OPERATORS_CHECK
 
+#ifdef IOSTREAM_CHECK
 	cout << (Fraction(1, 3) >= Fraction(5, 11)) << endl;
 
 	Fraction A(1, 2);
@@ -352,4 +367,36 @@ void main()
 	Fraction B;
 	cout << "Введите простую дробь: "; cin >> B;
 	cout << B << endl;
+
+#endif // IOSTREAM_CHECK
+
+#ifdef CONVERSIONS_FROM_OTHER_TO_CLASS
+	//(type)value; C-like notation
+	//type(value); Function notation
+
+	Fraction A = Fraction(5);				//Conversion from less to more (from 'int' to 'Fraction')
+	cout << A << endl;
+
+	cout << delimiter << endl;
+
+	Fraction B;
+	cout << delimiter << endl;
+	B = Fraction(8);	//Conversion from less to more 
+						//CopyAssignment
+						
+	cout << delimiter << endl;
+	cout << B << endl;
+
+	cout << delimiter << endl;
+#endif // CONVERSIONS_FROM_OTHER_TO_CLASS
+
+#ifdef CONVERTIONS_HOME_WORK
+	Fraction A = 2.75;
+	cout << A << endl;
+
+	Fraction B;
+	cout << "Введите дробь: "; cin >> B;
+	cout << B << endl;
+#endif // CONVERTIONS_HOME_WORK
+
 }
