@@ -59,10 +59,11 @@ public:
 	}
 	Fraction(double value)
 	{
-		integer = int(value); //выделяем целую часть
+		//value += 1e-10;
+		integer = value;	  //выделяем целую часть
 		value -= integer;	  //получаем дробную часть	
 		denominator = 1e+9;	  //достигаем высокой точности
-		numerator = int(value * denominator);
+		numerator = value * denominator+0.5;
 		reduce();
 		cout << "1ArgDoubleConstructor:\t" << this << endl;
 	}
@@ -391,12 +392,9 @@ void main()
 #endif // CONVERSIONS_FROM_OTHER_TO_CLASS
 
 #ifdef CONVERTIONS_HOME_WORK
-	Fraction A = 2.75;
+	Fraction A = 2.76;
 	cout << A << endl;
 
-	Fraction B;
-	cout << "Введите дробь: "; cin >> B;
-	cout << B << endl;
 #endif // CONVERTIONS_HOME_WORK
 
 }
