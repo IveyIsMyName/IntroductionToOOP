@@ -139,6 +139,16 @@ public:
 		integer--;
 		return old;
 	}
+
+				//Type-cast operators:
+	explicit operator int()
+	{
+		return to_proper().integer;
+	}
+	explicit operator double()const
+	{
+		return integer + (double)numerator / denominator;
+	}
 	
 				//Methods
 	Fraction& to_improper()
@@ -316,7 +326,7 @@ std::istream& operator>>(std::istream& is, Fraction& obj)
 //#define ARITHMETICAL_OPERATORS_CHECK
 //#define IOSTREAM_CHECK
 //#define CONVERSIONS_FROM_OTHER_TO_CLASS
-#define CONVERTIONS_HOME_WORK
+//#define CONVERTIONS_HOME_WORK
 
 void main()
 {
@@ -396,5 +406,16 @@ void main()
 	cout << A << endl;
 
 #endif // CONVERTIONS_HOME_WORK
+	
+	Fraction A(2, 3, 4);
+	A.to_improper();
 
+	cout << A << endl;
+
+	int a = (int) A;
+	cout << a << endl;
+	cout << A << endl;
+
+	double da = (double) A;
+	cout << da << endl;
 }
