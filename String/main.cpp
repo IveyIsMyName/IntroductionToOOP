@@ -1,6 +1,8 @@
 ﻿#include<iostream>
 using namespace std;
 #define delimiter "\n--------------------------------------------------------------------\n"
+using std::cin;
+using std::cout;
 
 class String
 {
@@ -46,7 +48,18 @@ public:
 		{
 			this->str[i] = other.str[i];
 		}
-		cout << "CopyConstructor:\t\t" << this << endl;
+		cout << "CopyConstructor:\t" << this << endl;
+	}
+	String(String&& other)noexcept //r-value reference
+	{
+		//Shallow copy:
+		this->size = other.size;
+		this->str = other.str;
+
+		//Reset other:
+		other.size = 0;
+		other.str = nullptr;
+		cout << "MoveConstructor:\t" << this << endl;
 	}
 	~String()
 	{
@@ -63,6 +76,17 @@ public:
 		this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyAssignment:\t\t" << this << endl;
+		return *this;
+	}
+	String& operator=(String&& other)noexcept
+	{
+		if (this == &other) return *this;
+		delete[] this->str;
+		this->size = other.size;
+		this->str = other.str;
+		other.size = 0;
+		other.str = nullptr;
+		cout << "MoveAssignment:\t\t" << this << endl;
 		return *this;
 	}
 	char operator[](int i)const
@@ -99,11 +123,13 @@ String operator+(const String& left, const String& right)
 		//buffer.get_str()[i + left.get_size() - 1] = right.get_str()[i];
 	return buffer;
 }
-
+//#define CONSTRUCTORS_CHECK
+//#define OPERATOR_PLUS_CHECK
 void main()
 {
 	setlocale(LC_ALL, "");
 
+#ifdef CONSTRUCTORS_CHECK
 	String str1;			//Default constructor
 	str1.print();
 	cout << delimiter << endl;
@@ -129,4 +155,31 @@ void main()
 	str5 = str3 + str4;
 	str5.print();
 	cout << str5 << endl;
+#endif 
+#ifdef OPERATOR_PLUS_CHECK
+	String str1 = "Hello";
+	String str2 = "World";
+
+	cout << delimiter << endl;
+	String str3 = str1 + str2;
+	cout << str3 << endl;
+	cout << delimiter << endl;
+	
+	cout << str1 << endl;
+	cout << str2 << endl;
+	cout << delimiter << endl;
+	
+#endif // OPERATOR_PLUS_CHECK
+	
+	String str1 = "Hello";
+	String str2 = "World";
+	
+	cout << str1 << endl;
+	cout << str2 << endl;
+	
+	str2 = move(str1);
+	
+	cout << str2 << " Address:\t\t" << &str2 << endl;
+	
+
 }
