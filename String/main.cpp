@@ -125,6 +125,8 @@ String operator+(const String& left, const String& right)
 }
 //#define CONSTRUCTORS_CHECK
 //#define OPERATOR_PLUS_CHECK
+#define OPERATOR_MOVE_ASSIGNMENT
+
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -156,6 +158,7 @@ void main()
 	str5.print();
 	cout << str5 << endl;
 #endif 
+
 #ifdef OPERATOR_PLUS_CHECK
 	String str1 = "Hello";
 	String str2 = "World";
@@ -171,15 +174,18 @@ void main()
 	
 #endif // OPERATOR_PLUS_CHECK
 	
+#ifdef OPERATOR_MOVE_ASSIGNMENT
 	String str1 = "Hello";
 	String str2 = "World";
-	
+
 	cout << str1 << endl;
 	cout << str2 << endl;
-	
-	str2 = move(str1);
-	
-	cout << str2 << " Address:\t\t" << &str2 << endl;
-	
+
+	String str3;
+	cout << delimiter << endl;
+	str3 = str1 + str2; //MoveAssignment
+	cout << delimiter << endl;
+	cout << str3 << endl;
+#endif // OPERATOR_MOVE_ASSIGNMENT
 
 }
