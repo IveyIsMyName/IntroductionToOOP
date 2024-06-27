@@ -23,7 +23,13 @@ public:
 	}
 
 	//				Constructors:
-	String(const char* str):size(strlen(str) + 1), str(new char[size]{})
+	explicit String(int size = 80) :size(size), str(new char[size] {})
+	{
+		//this->size = size;
+		//this->str = new char[size] {};
+		cout << "1ArgConstructor:\t" << this << endl;
+	}
+	String(const char* str):String(strlen(str)+1)
 	{
 		//this->size = strlen(str) + 1;
 		//this->str = new char[size] {};
@@ -33,21 +39,15 @@ public:
 		}
 		cout << "Constructor:\t\t" << this << endl;
 	}
-	explicit String(int size = 80):size(size), str(new char[size] {})
-	{
-		//this->size = size;
-		//this->str = new char[size] {};
-		cout << "1ArgConstructor:\t" << this << endl;
-	}
-	String(const String& other):size(other.size), str(new char[size]{})
+	String(const String& other):String(other.str)
 	{
 		//Deep Copy (Побитовое копирование)
 		//this->size = other.size;
 		//this->str = new char[size] {};
-		for (int i = 0; i < size; i++)
+		/*for (int i = 0; i < size; i++)
 		{
 			this->str[i] = other.str[i];
-		}
+		}*/
 		cout << "CopyConstructor:\t" << this << endl;
 	}
 	String(String&& other)noexcept:size(other.size), str(other.str) //r-value reference
