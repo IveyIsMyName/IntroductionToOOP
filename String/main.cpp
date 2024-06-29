@@ -4,110 +4,139 @@ using std::cin;
 using std::cout;
 #define delimiter "\n--------------------------------------------------------------------\n"
 
+/// Объявление класса (Class declaration)
+
 class String
 {
 	int size;
 	char* str;
 public:
-	int get_size()const
-	{
-		return size;
-	}
-	const char* get_str()const
-	{
-		return str;
-	}
-	char* get_str()
-	{
-		return str;
-	}
+	int get_size()const;
+	const char* get_str()const;
+	char* get_str();
 
 	//				Constructors:
-	explicit String(int size = 80) :size(size), str(new char[size] {})
-	{
-		//this->size = size;
-		//this->str = new char[size] {};
-		cout << "1ArgConstructor:\t" << this << endl;
-	}
-	String(const char* str):String(strlen(str)+1)
-	{
-		//this->size = strlen(str) + 1;
-		//this->str = new char[size] {};
-		for (int i = 0; str[i]; i++)
-		{
-			this->str[i] = str[i];
-		}
-		cout << "Constructor:\t\t" << this << endl;
-	}
-	String(const String& other):String(other.str)
-	{
-		//Deep Copy (Побитовое копирование)
-		//this->size = other.size;
-		//this->str = new char[size] {};
-		/*for (int i = 0; i < size; i++)
-		{
-			this->str[i] = other.str[i];
-		}*/
-		cout << "CopyConstructor:\t" << this << endl;
-	}
-	String(String&& other)noexcept:size(other.size), str(other.str) //r-value reference
-	{
-		//Shallow copy:
-		//this->size = other.size;
-		//this->str = other.str;
-
-		//Reset other:
-		other.size = 0;
-		other.str = nullptr;
-		cout << "MoveConstructor:\t" << this << endl;
-	}
-	~String()
-	{
-		delete[] str;
-		cout << "Destructor:\t\t" << this << endl;
-	}
+	explicit String(int size = 80);
+	String(const char* str);
+	String(const String& other);
+	String(String&& other)noexcept;
+	~String();
 
 	//				 Operators:
-	String& operator=(const String& other)
-	{
-		if (this == &other) return *this;
-		delete[] this->str;
-		this->size = other.size;
-		this->str = new char[size] {};
-		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
-		cout << "CopyAssignment:\t\t" << this << endl;
-		return *this;
-	}
-	String& operator=(String&& other)noexcept
-	{
-		if (this == &other) return *this;
-		delete[] this->str;
-		this->size = other.size;
-		this->str = other.str;
-		other.size = 0;
-		other.str = nullptr;
-		cout << "MoveAssignment:\t\t" << this << endl;
-		return *this;
-	}
-	char operator[](int i)const
-	{
-		return this->str[i];
-	}
-	char& operator[](int i)
-	{
-		return this->str[i];
-	}
+	String& operator=(const String& other);
+	String& operator=(String&& other)noexcept;
+	char operator[](int i)const;
+	char& operator[](int i);
 
 	//				  Methods:
-	void print()const
-	{
-		cout << "Obj:\t\t\t" << this << endl;
-		cout << "String:\t\t\t" << str << endl;
-		cout << "Addr\t\t\t" << &str << endl;
-		cout << "Size:\t\t\t" << size << endl;
-		cout << delimiter << endl;
-	}
+	void print()const;
 };
+
+/// Конец объявления класса (Class declaration end)
+
+///---------------------------------------------------------------///
+
+/// Определение класса (Class definition)
+
+int String::get_size()const
+{
+	return size;
+}
+const char* String::get_str()const
+{
+	return str;
+}
+char* String::get_str()
+{
+	return str;
+}
+
+//				Constructors:
+String::String(int size) :size(size), str(new char[size] {})
+{
+	//this->size = size;
+	//this->str = new char[size] {};
+	cout << "1ArgConstructor:\t" << this << endl;
+}
+String::String(const char* str) :String(strlen(str) + 1)
+{
+	//this->size = strlen(str) + 1;
+	//this->str = new char[size] {};
+	for (int i = 0; str[i]; i++)
+	{
+		this->str[i] = str[i];
+	}
+	cout << "Constructor:\t\t" << this << endl;
+}
+String::String(const String& other) :String(other.str)
+{
+	//Deep Copy (Побитовое копирование)
+	//this->size = other.size;
+	//this->str = new char[size] {};
+	/*for (int i = 0; i < size; i++)
+	{
+		this->str[i] = other.str[i];
+	}*/
+	cout << "CopyConstructor:\t" << this << endl;
+}
+String::String(String&& other)noexcept :size(other.size), str(other.str) //r-value reference
+{
+	//Shallow copy:
+	//this->size = other.size;
+	//this->str = other.str;
+
+	//Reset other:
+	other.size = 0;
+	other.str = nullptr;
+	cout << "MoveConstructor:\t" << this << endl;
+}
+String::~String()
+{
+	delete[] str;
+	cout << "Destructor:\t\t" << this << endl;
+}
+
+//				 Operators:
+String& String::operator=(const String& other)
+{
+	//Deep copy
+	if (this == &other) return *this;
+	delete[] this->str;
+	this->size = other.size;
+	this->str = new char[size] {};
+	for (int i = 0; i < size; i++)this->str[i] = other.str[i];
+	cout << "CopyAssignment:\t\t" << this << endl;
+	return *this;
+}
+String& String::operator=(String&& other)noexcept
+{
+	if (this == &other) return *this;
+	delete[] this->str;
+	this->size = other.size;
+	this->str = other.str;
+	other.size = 0;
+	other.str = nullptr;
+	cout << "MoveAssignment:\t\t" << this << endl;
+	return *this;
+}
+char String::operator[](int i)const
+{
+	return this->str[i];
+}
+char& String::operator[](int i)
+{
+	return this->str[i];
+}
+
+//				  Methods:
+void String::print()const
+{
+	cout << "Obj:\t\t\t" << this << endl;
+	cout << "String:\t\t\t" << str << endl;
+	cout << "Addr\t\t\t" << &str << endl;
+	cout << "Size:\t\t\t" << size << endl;
+	cout << delimiter << endl;
+}
 std::ostream& operator<<(std::ostream& os, const String& obj)
 {
 	return os << obj.get_str();
@@ -124,6 +153,8 @@ String operator+(const String& left, const String& right)
 		//buffer.get_str()[i + left.get_size() - 1] = right.get_str()[i];
 	return buffer;
 }
+/// Конец определения класса (Class definiton end)
+
 //#define CONSTRUCTORS_CHECK
 //#define OPERATOR_PLUS_CHECK
 //#define OPERATOR_MOVE_ASSIGNMENT
@@ -191,7 +222,7 @@ void main()
 #endif // OPERATOR_MOVE_ASSIGNMENT
 
 #ifdef CALLING_CONSTRUCTORS
-	String str1; //Default constructor
+	String str1;	 //Default constructor
 	str1.print();
 
 	//String str2 = 8; //Single-Argument construcor 'int', explicit вызвать невозможно
