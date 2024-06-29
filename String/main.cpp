@@ -209,10 +209,10 @@ void main()
 	//Если нужно вызвать DefaultConstructor, это делается следующим образом:
 	//String str6 = str3;		//CopyConstructor
 	//String str6(str3);		//CopyConstructor
+	String str5{};				//Явный вызов конструтора по умолчанию
+	str5.print();
 	String str6{ str3 };		//CopyConstructor
 	str6.print();
-	String str5{};			//Явный вызов конструтора по умолчанию
-	str5.print();
 	String str7 = str5 + str6;
 	str7.print();
 	//Следовательно, абсолютно любой конструктор можно вызвать при помощи () или {}
